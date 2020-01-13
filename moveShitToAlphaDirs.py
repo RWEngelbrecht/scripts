@@ -4,9 +4,6 @@ def removeAlphaDirs(fnD, dictVals):
 	return [value for value in fnD if value not in dictVals]
 
 def chooseAlphaDir(fileName, filePath):
-	print(fileName)
-	# fn = fileName.replace(" ", "\ ")
-	# fn = fileName
 	if fileName[0].lower() in dirs["a-d"]:
 		print("moving "+ fileName+" to a-d")
 		moveAndCreateDir(filePath, os.path.join(inDir, "a-d"))
@@ -30,7 +27,6 @@ def chooseAlphaDir(fileName, filePath):
 		moveAndCreateDir(filePath, os.path.join(inDir, "x-z"))
 
 def moveAndCreateDir(src, dst):
-	print("file path: "+src)
 	if os.path.isdir(dst) == False:
 		os.makedirs(dst)
 	shutil.move(src, dst)
