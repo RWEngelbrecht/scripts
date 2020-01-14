@@ -35,12 +35,37 @@ soup = BeautifulSoup(html_doc, 'html.parser')
 
 
 ### DIRECTLY ACCESS ELEMENTS
-
 # print(soup.head)
 # print(soup.body)
 # print(soup.head.title)
 
-### USING FIND()
-
+### USING find()
 elem = soup.find('div')  ## Returns first element found
+
+### USING find_all()/findAll()
+elem = soup.findAll('div')  ## Returns list of elements found
+
+### FINDING BY ID/CLASS
+elem = soup.find(id='section-2')
+elem = soup.find(class_='items')   ## Class is reserved keyword, append underscore
+
+### FINDING BY ATTRIBUTES
+elem = soup.find(attrs={"data-hello":"hi"})
+
+### USING select()
+elem = soup.select('#section-1')  ## Returns list of elements selected, # for id, . for class
+elem = soup.select('#section-1')[0]
+
+### USING get_text()
+elem = soup.find(class_='item').get_text()  ## Returns text enclosed in element
+	## Example of looping
+	# for item in soup.select('.items'):
+	# 	print(item.get_text())
+
+### Navigation
+elem = soup.body.contents[0].find_next_sibling()
+elem = soup.find(id='section-2').find_previous_sibling() ## Returns section-1 div
+elem = soup.find(class_='item').find_parent()
+elem = soup.find('h3').find_next_sibling('p')
+
 print(elem)
