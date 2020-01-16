@@ -24,8 +24,10 @@ gloup = BeautifulSoup(moviePage.text, 'html.parser')
 
 genres = []
 getGenre = gloup.find(class_='genres').findAll('li')
+for genre in getGenre:
+	genres.append(genre.getText())
 
-releaseDate = gloup.find(class_='release_date').getText()
+releaseDate = re.sub('\(*\)*','',gloup.find(class_='release_date').getText())
 
 director = gloup.find('ol').find('li').find('a').getText()
 
@@ -34,14 +36,18 @@ for fact in facts:
 	factChildren = fact.findChildren('strong')
 	for child in factChildren:
 		if child.getText() == "Runtime":
-			releaseDate = fact.getText()[8:]
+			duration = fact.getText()[8:]
 
-for genre in getGenre:
-	genres.append(genre.getText())
+highPaidActors = gloup.find(class_='people scroller').findAll('li', {'class' : 'card'})
+actors = []
+for actor in highPaidActors:
+	actors.append(actor.find('p').find('a').getText())
 
 print(
 """Title:		"""+title+"""
 Released:	"""+releaseDate+"""
+Duration:	"""+duration+"""
 Director:	"""+director+"""
+Main Cast:	"""+", ".join(actors)+"""
 Genres:		"""+", ".join(genres)
 )
