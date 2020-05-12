@@ -2,6 +2,8 @@ import requests, sys, re
 from bs4 import BeautifulSoup
 from csv import writer
 
+# TODO: support for same movie title, different year
+
 if len(sys.argv) < 2:
 	sys.exit('Enter a movie you\'d like to look up...')
 elif len(sys.argv) > 2:
