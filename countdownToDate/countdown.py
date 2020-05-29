@@ -1,3 +1,8 @@
+# Countdown script that accepts date in format
+#					dd <Month> yyyy [hh:mm]
+#							[]: optional
+# and counts down from current day to given date
+
 import datetime, sys, re, time, math, os
 from datetime import date
 
