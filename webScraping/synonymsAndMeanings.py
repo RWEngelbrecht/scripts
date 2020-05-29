@@ -23,29 +23,30 @@ def lookUpWord(driver, command, word):
 # use -q to execute phantomSearch, scrape synonyms/definition, print to stdout
 def phantomSearch(driver, command, word, flags):
 	if "-q" in flags:
-		print("command == "+command)
+		results = []
 		if command == "synonym":
 			driver.get("https://www.thesaurus.com/browse/"+word)
 			synonymList = driver.find_element_by_xpath("/html/body/div/div[2]/div/div/div[2]/main/section/section/div[2]/ul")
 			synonymItems = synonymList.find_elements_by_tag_name("li")
 			for synonymItem in synonymItems:
-				print(synonymItem.text)
+				results.append(synonymItem.text)
 			driver.quit()
 		elif command == "define":
-			definitions = []
 			driver.get("https://www.dictionary.com/browse/"+word)
 			definitionBlock = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/main/section/section/div[1]/section[2]")
 			definitionItems = definitionBlock.find_elements_by_tag_name("div")
-			for i in range (0, len(definitionItems)):#definitionItem in definitionItems:
-				if len(definitionItems[i].find_element_by_tag_name("span").text) > 0:
-					definitions.append(
-						str(i + 1) + '. ' +
-						definitionItems[i].find_element_by_tag_name("span").text
-						)
+			for definition in definitionItems:
+				line = definition.find_element_by_tag_name("span").text
+				if len(line) > 0 and line not in results: # Would rather find root of this problem
+					results.append(line)
 			driver.quit()
-			for definition in definitions:
-				print(definition)
+		for i in range(0, len(results)):
+			print(str(i)+". "+results[i])
+	else:
+		for flag in flags:
+			print("\'"+flag+"\' is not a recognized flag...")
 
+# Don't wait for page to finish loading before scraping
 capabilities = DesiredCapabilities().FIREFOX
 capabilities["pageLoadStrategy"] = "eager"
 
