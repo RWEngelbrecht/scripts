@@ -33,7 +33,7 @@ def phantomSearch(driver, command, word, flags):
 			driver.quit()
 		elif command == "define":
 			driver.get("https://www.dictionary.com/browse/"+word)
-			definitionBlock = driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/main/section/section/div[1]/section[2]")
+			definitionBlock = driver.find_element_by_xpath("/html/body/div[1]/div/div/div[2]/main/section/section/div[1]/section[2]/div")
 			definitionItems = definitionBlock.find_elements_by_tag_name("div")
 			for definition in definitionItems:
 				line = definition.find_element_by_tag_name("span").text
@@ -57,6 +57,7 @@ elif len(sys.argv) > 3 and (sys.argv[1] == "synonym" or sys.argv[1] == "define")
 	options = Options()
 	options.headless = True
 	driver = webdriver.Firefox(capabilities=capabilities, options=options)
+	driver.implicitly_wait(10)
 	phantomSearch(driver, sys.argv[1], sys.argv[2], sys.argv[3:])
 else:
 	print("You used it wrong, dumbass!")
