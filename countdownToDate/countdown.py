@@ -48,7 +48,11 @@ if len(sys.argv) > 1:
 		hour
 		minutes
 	except:
-		until = datetime.datetime(year, month, day).timestamp()
+		try:
+			until = datetime.datetime(year, month, day).timestamp()
+		except:
+			print("You have to give me more information...")
+			exit()
 	else:
 		until = datetime.datetime(year, month, day, hour, minutes).timestamp()
 
