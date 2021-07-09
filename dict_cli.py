@@ -8,10 +8,12 @@ Usage:
 import requests, typer, json
 
 from typing import Optional
+from termcolor import cprint
 
 app = typer.Typer()
 state = {'verbose': False}
 
+# TODO: add -p flag to add pronunciation
 @app.command("define")
 def print_word_definitions(word:str, example:Optional[bool]=typer.Option(False, "--example", "-e")):
   response = requests.get(f'https://api.dictionaryapi.dev/api/v2/entries/en_GB/{word}').json()
@@ -34,8 +36,8 @@ def print_word_definitions(word:str, example:Optional[bool]=typer.Option(False, 
       elif example: print('  E.g:\t  None given...')
       print('')
   else:
-    print('\tGuess this dictionary doesn\'t have all the answers...\n\
-        Or you did a typo, silly human...')
+    cprint('    Guess this dictionary doesn\'t have all the answers...\n\
+    Or you did a typo, silly human...', 'red')
 
 
 @app.command("synonym")
@@ -56,12 +58,12 @@ def print_word_synonyms(word:str):
         for syn in synonym['syns']:
           print(f'\t  {", ".join(syn)}')
       else:
-        print(f'\t  There is no other way of saying this...')
+        cprint(f'\t  There is no other way of saying this...', 'red')
       print('')
 
   else:
-    print('\tGuess this dictionary doesn\'t have all the answers...\n\
-        Or you did a typo, silly human...')
+    cprint('\tGuess this dictionary doesn\'t have all the answers...\n\
+        Or you did a typo, silly human...', 'red')
 
 
 @app.callback()
