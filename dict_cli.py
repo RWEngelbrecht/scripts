@@ -8,7 +8,6 @@ Usage:
 import requests, typer, json
 
 from typing import Optional
-from termcolor import cprint
 
 app = typer.Typer()
 state = {'verbose': False}
@@ -20,6 +19,9 @@ def print_word_definitions(word:str, example:Optional[bool]=typer.Option(False, 
   if "title" not in response:
     # print(json.dumps(response, indent=2))
     meanings = response[0]['meanings']
+    if not meanings:
+      print("\n  Found the word, but no definitions.\n\tSorry, human :(")
+      exit()
     definitions = [{
       'pos': meaning['partOfSpeech'],
       'defs': [defi['definition'] for defi in meaning['definitions']],
@@ -36,8 +38,8 @@ def print_word_definitions(word:str, example:Optional[bool]=typer.Option(False, 
       elif example: print('  E.g:\t  None given...')
       print('')
   else:
-    cprint('    Guess this dictionary doesn\'t have all the answers...\n\
-    Or you did a typo, silly human...', 'red')
+    print('\tGuess this dictionary doesn\'t have all the answers...\n\
+        Or you did a typo, silly human...')
 
 
 @app.command("synonym")
@@ -58,12 +60,12 @@ def print_word_synonyms(word:str):
         for syn in synonym['syns']:
           print(f'\t  {", ".join(syn)}')
       else:
-        cprint(f'\t  There is no other way of saying this...', 'red')
+        print(f'\t  There is no other way of saying this...')
       print('')
 
   else:
-    cprint('\tGuess this dictionary doesn\'t have all the answers...\n\
-        Or you did a typo, silly human...', 'red')
+    print('\tGuess this dictionary doesn\'t have all the answers...\n\
+        Or you did a typo, silly human...')
 
 
 @app.callback()
